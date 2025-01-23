@@ -14,6 +14,12 @@ public class RobotWars {
         Scanner input = new Scanner(System.in);
         DefaultApi api = new DefaultApi();
 
+        System.out.println("Enter mapId");
+        String mapId = input.nextLine();
+
+        MapServices.printMap(api, mapId);
+        System.out.println();
+
         System.out.println("What u wanna do?" +
                 " 1. See all Games " +
                 " 2. See specific Game " +
@@ -38,7 +44,7 @@ public class RobotWars {
 
         else if (choice == 3) {
             System.out.println("MapId: ");
-            String mapId = input.nextLine();
+            mapId = input.nextLine();
             System.out.println("Which robot u wanna use?: ");
             String robotId = input.nextLine();
 
