@@ -4,8 +4,6 @@ import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.MapMapItems;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +42,15 @@ public class MapServices {
                 index++;
             }
         }
+    }
+    public static int[] getCoordinates(int index, int mapSizeX) {
+        int x = index % mapSizeX;
+        int y = index / mapSizeX;
+
+        return new int[]{x, y};
+    }
+
+    public static int coordinatesToMapIndex(int mapSizeX, int[] coordinates) {
+        return coordinates[1] * mapSizeX + coordinates[0];
     }
 }

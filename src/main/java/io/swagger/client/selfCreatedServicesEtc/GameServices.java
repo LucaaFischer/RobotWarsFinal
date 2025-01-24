@@ -14,17 +14,21 @@ public class GameServices {
         return api.apiGamesGamePost(newGame).getId();
     }
 
-    public static void joinGame(DefaultApi api, String gameId, String robotId) {
+    public static String joinGame(DefaultApi api, String gameId, String robotId) {
         JoinGame joinGame = new JoinGame();
         joinGame.setRobotId(robotId);
         try {
-            api.apiGamesGameIdJoinPost(joinGame, gameId);
+            String playerId = api.apiGamesGameIdJoinPost(joinGame, gameId).getPlayerId();
             System.out.println("Sucessfully joined game: " + gameId);
+
+            return playerId;
         }
         catch (ApiException e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
+
     public static List<Game> getAllGames(DefaultApi api) throws ApiException {
         return api.apiGamesGet();
     }
