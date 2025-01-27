@@ -25,72 +25,59 @@ public class RobotWars {
                 " 7. Create new Robot");
 
         int choice = input.nextInt();
-
         input.nextLine();
 
         if (choice == 1) {
             System.out.println(GameServices.getAllGames(api));
-
         } else if (choice == 2) {
             System.out.println("GameID?");
             String gameID = input.nextLine();
             System.out.println(GameServices.getGame(api, gameID));
         }
-
         else if (choice == 3) {
-            System.out.println("MapId: ");
-            String mapId = input.nextLine();
-            System.out.println("Which robot u wanna use?: ");
-            String robotId = input.nextLine();
-
-            String gameId = GameServices.createGame(api, mapId);
-            System.out.println("GameID: " +gameId);
-
-            String playerId = GameServices.joinGame(api, gameId, robotId);
-
-            startGame(api, gameId, mapId, playerId);
-
+            GameCreation.create(api);
         } else if (choice == 4) {
-            System.out.println("Enter gameId");
-            String gameId = input.nextLine();
-            System.out.println("Enter robotId");
-            String robotId = input.nextLine();
-
-            String playerId = GameServices.joinGame(api, gameId, robotId);
-            String mapId = api.apiGamesGameIdGet(gameId).getMap();
-
-            startGame(api, gameId, mapId, playerId);
-
+            JoiningGame.join(api);
         } else if (choice == 5) {
             System.out.println(RobotServices.getRobots(api));
-
         } else if (choice == 6) {
            System.out.println(RobotServices.getSpecificBot(input, api, Objects.requireNonNull(RobotServices.getRobots(api))));
-
         } else if (choice == 7) {
             RobotServices.createRobot(api, input);
         }
     }
 
-    private static void startGame(DefaultApi api, String gameId, String mapId, String playerId)
-            throws IOException, InterruptedException, ApiException {
+    public static void startGame(DefaultApi api, String gameId, String mapId)
+            throws InterruptedException, ApiException {
 
         if(GameController.waitForStart(api, gameId)) {
             double indexRobotTwo = (double) api.apiMapsMapIdGet(mapId).get("mapSize");
 
-            LocalRobot robotOne = new LocalRobot(1);
-            LocalRobot robotTwo = new LocalRobot((int)indexRobotTwo);
+            LocalRobot robotOne = new LocalRobot(0);
+            LocalRobot robotTwo = new LocalRobot((int)indexRobotTwo -1);
 
             List<String> robotIds = new ArrayList<>();
+            List<String> playerIds = new ArrayList<>();
             List<PlayerRobot> robots = api.apiGamesGameIdGet(gameId).getPlayer();
             for (PlayerRobot robot: robots) {
                 robotIds.add(robot.getRobotId());
+                playerIds.add(robot.getPlayerId());
             }
 
-            String robotOneIdD = robotIds.get(0);
-            String robotTwoIdD = robotIds.get(1);
+            String robotOneId = robotIds.get(0);
+            robotOne.setMovementPoints(api.apiRobotsRobotIdGet(robotOneId).getMovementRate());
 
-           GameController.playGame(api, gameId, playerId, mapId, robotOneIdD, robotTwoIdD, robotOne, robotTwo);
+            String robotTwoId = robotIds.get(1);
+            robotTwo.setMovementPoints(api.apiRobotsRobotIdGet(robotTwoId).getMovementRate());
+
+            String playerOneId = playerIds.get(0);
+            String playerTwoId = playerIds.get(1);
+
+            if (TurnOrder.getStartingRobot(api, robotOneId, robotTwoId) == 1) {
+                GameController.turn(api, gameId, playerOneId, mapId, robotOneId, robotOne);
+            } else {
+                GameController.turn(api, gameId, playerTwoId, mapId, robotTwoId, robotTwo);
+            }
         }
     }
 }

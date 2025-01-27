@@ -23,23 +23,13 @@ public class MoveServices {
         int index = robotTurn.getIndex();
 
         double mapSizeX = (double) api.apiMapsMapIdGet(mapId).get("mapSizeX");
-        double mapSize = (double) api.apiMapsMapIdGet(mapId).get("mapSize");
-
         int[] currCoordinates = MapServices.getCoordinates(index, (int) mapSizeX);
         int[] newCoordinates = new int[2];
 
         NewMove newMove = new NewMove();
 
         System.out.println("Where u wanna move?");
-        System.out.println("North (W) \n" +
-                "North-East (E) \n" +
-                "East (D) \n" +
-                "South-East (X) \n" +
-                "South (S) \n" +
-                "South-West (Y) \n" +
-                "West (A) \n" +
-                "North-West (Q) \n \n" +
-                "or stay on current field (B)");
+        AskForDirection.whichDirection();
 
         String intendedMove = input.nextLine();
         Align align = Align.NW;
@@ -48,17 +38,17 @@ public class MoveServices {
             if(intendedMove.equalsIgnoreCase(direction.key)) {
                 newCoordinates[0] = currCoordinates[0] + direction.x;
                 newCoordinates[1] = currCoordinates[1] + direction.y;
-                align = invertDirection(direction);
+                align = InvertDirections.invertDirection(direction);
             }
         }
 
         BigDecimal newMapIndex = BigDecimal.valueOf(MapServices.coordinatesToMapIndex((int)mapSizeX, newCoordinates));
+
         robotTurn.setIndex(newMapIndex.intValue());
         newMove.setMapIndex(newMapIndex);
         newMove.setPlayerId(playerID);
         newMove.setMovementType(MovementType.MOVE);
         newMove.setAlign(align);
-
 
         System.out.println(playerID);
         System.out.println(MovementType.MOVE.getValue());
@@ -67,43 +57,42 @@ public class MoveServices {
         return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
     }
 
-    public void makeAlign(DefaultApi api, String gameID, String playerID) throws ApiException {
-        NewMove newMove = new NewMove();
-        System.out.println("Where u wanna align?");
-        System.out.println("North (W) \n" +
-                "North-East (E) \n" +
-                "East (D) \n" +
-                "South-East (X) \n" +
-                "South (S) \n" +
-                "South-West (Y) \n" +
-                "West (A) \n" +
-                "North-West (Q) \n \n" +
-                "or stay on current field (B)");
+    public static String makeAlign(DefaultApi api, String gameID, String playerID, LocalRobot robot) {
+        try {
+            Scanner input = new Scanner(System.in);
+            String intendedMove;
+            NewMove newMove = new NewMove();
+            System.out.println("Where u wanna align?");
+            AskForDirection.whichDirection();
 
-        newMove.setMapIndex(newMove.getMapIndex());
-        //newMove.setAlign(invertAlignment());
-        api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID);
+            intendedMove = input.nextLine();
+
+            Align align = Align.NW;
+
+            for (Directions direction : Directions.values()) {
+                if (intendedMove.equalsIgnoreCase(direction.key)) {
+                    align = InvertDirections.invertDirection(direction);
+                }
+            }
+
+            newMove.setAlign(align);
+            newMove.setPlayerId(playerID);
+            newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
+            newMove.setMovementType(MovementType.ALIGN);
+
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
+        }
+        catch (ApiException e) {
+            System.out.println(e.getResponseBody());
+        }
+        return null;
+    }
+
+    public static String attack(DefaultApi api, String gameId, String playerId, String mapId, LocalRobot robotOne) {
+        return "UwU";
     }
 
     public static List<Move> getMovesAfter(DefaultApi api, String moveID) throws ApiException {
         return api.apiGamesGameIdMoveGet(moveID);
-    }
-
-    public static Align invertDirection(Directions alignment) {
-        for (Align align : Align.values()) {
-            if (Objects.equals(alignment.freddyKey, align.getValue())) {
-                return align;
-            }
-        }
-        return null;
-    }
-
-    public static Directions invertAlign(Align align) {
-        for (Directions direction : Directions.values()) {
-            if (Objects.equals(direction.freddyKey, align.getValue())) {
-                return direction;
-            }
-        }
-        return null;
     }
 }
