@@ -6,8 +6,7 @@ public class LocalRobot {
     protected int index;
     protected BigDecimal movementPoints;
 
-    public LocalRobot(int index) {
-        this.index = index;
+    public LocalRobot() {
     }
 
     public int getIndex() {

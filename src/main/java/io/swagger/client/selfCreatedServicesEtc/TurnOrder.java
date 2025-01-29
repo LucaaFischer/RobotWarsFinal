@@ -1,15 +1,13 @@
 package io.swagger.client.selfCreatedServicesEtc;
 
 import io.swagger.client.ApiException;
-import io.swagger.client.api.DefaultApi;
+import io.swagger.client.model.Robot;
 
 public class TurnOrder {
-    public static int getStartingRobot(DefaultApi api, String robotOneID, String robotTwoID) throws ApiException {
-        int movementRobotOne = api.apiRobotsRobotIdGet(robotOneID).getMovementRate().intValue();
-        int movementRobotTwo = api.apiRobotsRobotIdGet(robotTwoID).getMovementRate().intValue();
+    public static int getStartingRobot(LocalRobot robotOne, LocalRobot robotTwo) {
         int startingRobot;
 
-        if (movementRobotOne > movementRobotTwo) {
+        if (robotOne.getMovementPoints().intValue() > robotTwo.getMovementPoints().intValue()) {
             startingRobot = 1;
         } else {
             startingRobot = 2;

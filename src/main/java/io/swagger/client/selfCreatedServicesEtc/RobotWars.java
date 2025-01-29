@@ -2,16 +2,15 @@ package io.swagger.client.selfCreatedServicesEtc;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
+import io.swagger.client.model.Move;
 import io.swagger.client.model.PlayerRobot;
+import io.swagger.client.model.Robot;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class RobotWars {
-    public static void main(String[] args) throws ApiException, IOException, InterruptedException {
+    public static void main(String[] args) throws ApiException, InterruptedException {
         Scanner input = new Scanner(System.in);
         DefaultApi api = new DefaultApi();
 
@@ -44,40 +43,6 @@ public class RobotWars {
            System.out.println(RobotServices.getSpecificBot(input, api, Objects.requireNonNull(RobotServices.getRobots(api))));
         } else if (choice == 7) {
             RobotServices.createRobot(api, input);
-        }
-    }
-
-    public static void startGame(DefaultApi api, String gameId, String mapId)
-            throws InterruptedException, ApiException {
-
-        if(GameController.waitForStart(api, gameId)) {
-            double indexRobotTwo = (double) api.apiMapsMapIdGet(mapId).get("mapSize");
-
-            LocalRobot robotOne = new LocalRobot(0);
-            LocalRobot robotTwo = new LocalRobot((int)indexRobotTwo -1);
-
-            List<String> robotIds = new ArrayList<>();
-            List<String> playerIds = new ArrayList<>();
-            List<PlayerRobot> robots = api.apiGamesGameIdGet(gameId).getPlayer();
-            for (PlayerRobot robot: robots) {
-                robotIds.add(robot.getRobotId());
-                playerIds.add(robot.getPlayerId());
-            }
-
-            String robotOneId = robotIds.get(0);
-            robotOne.setMovementPoints(api.apiRobotsRobotIdGet(robotOneId).getMovementRate());
-
-            String robotTwoId = robotIds.get(1);
-            robotTwo.setMovementPoints(api.apiRobotsRobotIdGet(robotTwoId).getMovementRate());
-
-            String playerOneId = playerIds.get(0);
-            String playerTwoId = playerIds.get(1);
-
-            if (TurnOrder.getStartingRobot(api, robotOneId, robotTwoId) == 1) {
-                GameController.turn(api, gameId, playerOneId, mapId, robotOneId, robotOne);
-            } else {
-                GameController.turn(api, gameId, playerTwoId, mapId, robotTwoId, robotTwo);
-            }
         }
     }
 }

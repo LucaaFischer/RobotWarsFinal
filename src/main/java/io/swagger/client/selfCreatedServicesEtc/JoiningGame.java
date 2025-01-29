@@ -17,6 +17,6 @@ public class JoiningGame {
         System.out.println("PlayerIDTwo: " +playerTwoId);
         String mapId = api.apiGamesGameIdGet(gameId).getMap();
 
-        RobotWars.startGame(api, gameId, mapId);
+        GameStart.startGame(api, gameId, mapId);
     }
 }

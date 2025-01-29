@@ -20,6 +20,6 @@ public class GameCreation {
         String playerId = GameServices.joinGame(api, gameId, robotId);
         System.out.println("PlayerID: " + playerId);
 
-        RobotWars.startGame(api, gameId, mapId);
+        GameStart.startGame(api, gameId, mapId);
     }
 }

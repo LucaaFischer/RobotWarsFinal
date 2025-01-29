@@ -80,6 +80,8 @@ public class MoveServices {
             newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
             newMove.setMovementType(MovementType.ALIGN);
 
+            System.out.println("NewMove MapIndex" +newMove.getMapIndex());
+
             return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
         }
         catch (ApiException e) {
