@@ -1,7 +1,6 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Game;
 
-import io.swagger.client.ApiException;
-import io.swagger.client.model.Robot;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 
 public class TurnOrder {
     public static int getStartingRobot(LocalRobot robotOne, LocalRobot robotTwo) {

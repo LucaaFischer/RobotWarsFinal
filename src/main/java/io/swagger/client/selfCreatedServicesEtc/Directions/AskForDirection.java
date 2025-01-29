@@ -1,4 +1,4 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Directions;
 
 public class AskForDirection {
     public static void whichDirection() {

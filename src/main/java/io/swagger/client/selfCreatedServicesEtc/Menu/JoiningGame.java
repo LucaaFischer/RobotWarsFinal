@@ -1,9 +1,11 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Menu;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForGameID;
 import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForRobotID;
+import io.swagger.client.selfCreatedServicesEtc.Game.GameStart;
+import io.swagger.client.selfCreatedServicesEtc.Services.GameServices;
 
 public class JoiningGame {
     public static void join(DefaultApi api) throws ApiException, InterruptedException {

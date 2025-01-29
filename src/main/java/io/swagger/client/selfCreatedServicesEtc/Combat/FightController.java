@@ -1,8 +1,7 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Combat;
 
-import io.swagger.client.model.Robot;
-
-import java.math.BigDecimal;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.PrintStats;
 
 public class FightController {
     public void fight(LocalRobot robotTurn, LocalRobot robotNotTurn) {

@@ -1,8 +1,10 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Menu;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForGameID;
+import io.swagger.client.selfCreatedServicesEtc.Services.GameServices;
+import io.swagger.client.selfCreatedServicesEtc.Services.RobotServices;
 
 import java.util.*;
 

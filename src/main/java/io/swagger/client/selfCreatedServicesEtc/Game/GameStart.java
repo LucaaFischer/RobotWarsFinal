@@ -1,9 +1,10 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Game;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.PlayerRobot;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 
 import java.util.List;
 

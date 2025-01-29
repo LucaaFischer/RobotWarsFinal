@@ -1,4 +1,4 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Services;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;

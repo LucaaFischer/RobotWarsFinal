@@ -1,4 +1,4 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Directions;
 
 public enum Directions {
     NORTH(0, -1, "W", "N"),

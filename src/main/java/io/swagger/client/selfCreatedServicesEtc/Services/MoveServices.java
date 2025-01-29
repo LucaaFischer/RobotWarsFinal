@@ -1,4 +1,4 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Services;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
@@ -6,11 +6,13 @@ import io.swagger.client.model.Align;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.MovementType;
 import io.swagger.client.model.NewMove;
+import io.swagger.client.selfCreatedServicesEtc.Directions.AskForDirection;
+import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
+import io.swagger.client.selfCreatedServicesEtc.Directions.InvertDirections;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class MoveServices {
@@ -18,9 +20,9 @@ public class MoveServices {
         return api.apiGamesGameIdMoveGet(moveID);
     }
 
-    public static String makeMove(DefaultApi api, String gameID, String playerID, String mapId, LocalRobot robotTurn) throws ApiException {
+    public static String makeMove(DefaultApi api, String gameID, String playerID, String mapId, LocalRobot robot) throws ApiException {
         Scanner input = new Scanner(System.in);
-        int index = robotTurn.getIndex();
+        int index = robot.getIndex();
 
         try {
             double mapSizeX = (double) api.apiMapsMapIdGet(mapId).get("mapSizeX");
@@ -45,7 +47,8 @@ public class MoveServices {
 
             BigDecimal newMapIndex = BigDecimal.valueOf(MapServices.coordinatesToMapIndex((int) mapSizeX, newCoordinates));
 
-            robotTurn.setIndex(newMapIndex.intValue());
+            robot.setIndex(newMapIndex.intValue());
+            robot.setAlign(align);
             newMove.setMapIndex(newMapIndex);
             newMove.setPlayerId(playerID);
             newMove.setMovementType(MovementType.MOVE);
@@ -81,6 +84,7 @@ public class MoveServices {
             }
 
             robot.setIndex(robot.getIndex());
+            robot.setAlign(align);
             newMove.setAlign(align);
             newMove.setPlayerId(playerID);
             newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
@@ -94,6 +98,18 @@ public class MoveServices {
             System.out.println(e.getResponseBody());
         }
         return null;
+    }
+
+    public static String endMove(DefaultApi api, String gameID, String playerId, LocalRobot robot) throws ApiException {
+        NewMove newMove = new NewMove();
+
+        robot.setIndex(robot.getIndex());
+        newMove.setAlign(robot.getAlign());
+        newMove.setPlayerId(playerId);
+        newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
+        newMove.setMovementType(MovementType.END);
+
+        return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerId).getId();
     }
 
     public static String attack(DefaultApi api, String gameId, String playerId, String mapId, LocalRobot robotOne) {

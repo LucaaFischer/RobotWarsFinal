@@ -1,4 +1,6 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.LocalRobots;
+
+import io.swagger.client.model.Align;
 
 import java.math.BigDecimal;
 
@@ -6,6 +8,7 @@ public class LocalRobot {
     protected String name;
     protected String avatar;
     protected int index;
+    protected Align align;
     protected BigDecimal movementPoints;
     protected int hp;
     protected int damage;
@@ -35,6 +38,12 @@ public class LocalRobot {
     }
     public void setIndex(int index) {
         this.index = index;
+    }
+    public Align getAlign() {
+        return align;
+    }
+    public void setAlign(Align align) {
+        this.align = align;
     }
     public BigDecimal getMovementPoints() {
         return movementPoints;

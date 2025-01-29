@@ -1,7 +1,8 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Game;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 
 public class MainGame {
     public static void playGame(DefaultApi api, String gameId, String mapId, String firstRobotId, String firstPlayerId,

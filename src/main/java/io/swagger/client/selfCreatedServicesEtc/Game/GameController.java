@@ -1,8 +1,12 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Game;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Game;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
+import io.swagger.client.selfCreatedServicesEtc.Services.MapServices;
+import io.swagger.client.selfCreatedServicesEtc.Services.MoveServices;
+import io.swagger.client.selfCreatedServicesEtc.LocalRobots.PrintStats;
 
 import java.util.Scanner;
 
@@ -34,7 +38,7 @@ public class GameController {
             System.out.println("Moves left: " + movementThisRound);
 
         } while (movementThisRound > 0);
-
+        moveID = MoveServices.endMove(api, gameId, playerId, robotTurn);
         PrintStats.printStats(robotTurn, robotNotTurn);
 
         //MoveServices.getMovesAfter(api, moveID);
