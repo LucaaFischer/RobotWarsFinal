@@ -4,6 +4,7 @@ import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.NewRobot;
 import io.swagger.client.model.Robot;
+import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForRobotID;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RobotServices {
-    public static void createRobot(DefaultApi api, Scanner input) throws ApiException {
+    public static void createRobot(DefaultApi api) throws ApiException {
+        Scanner input = new Scanner(System.in);
         NewRobot newRobot = new NewRobot();
 
         System.out.println("Name: ");
@@ -28,7 +30,7 @@ public class RobotServices {
         System.out.println(api.apiRobotsRobotPost(newRobot));
     }
 
-    public static List<Robot> getRobots(DefaultApi api) throws ApiException {
+    public static List<Robot> getRobots(DefaultApi api) {
         try {
             List<Robot> robotList = api.apiRobotsGet();
             return robotList;
@@ -38,8 +40,8 @@ public class RobotServices {
         return null;
     }
 
-    public static Robot getSpecificBot(Scanner input, DefaultApi api, List<Robot> robots) throws ApiException {
-        String inputId;
+    public static Robot getSpecificBot(DefaultApi api, List<Robot> robots) throws ApiException {
+        String robotId = "";
         List<String> idList = new ArrayList<>();
 
         for (Robot robot : robots) {
@@ -47,11 +49,10 @@ public class RobotServices {
         }
 
         do {
-            System.out.println("Which robot u wanna see?");
-            inputId = input.nextLine();
-        } while (!validId(inputId, idList));
+             robotId = AskForRobotID.askForRobotID();
+        } while (!validId(robotId, idList));
 
-        return api.apiRobotsRobotIdGet(inputId);
+        return api.apiRobotsRobotIdGet(robotId);
     }
 
     public static boolean validId(String input, List<String> idList) {

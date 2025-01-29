@@ -24,8 +24,19 @@ public class GameStart {
             String playerOneId = playerRobots.get(0).getPlayerId();
             String playerTwoId = playerRobots.get(1).getPlayerId();
 
+            robotOne.setName("You");
+            robotOne.setAvatar("Y");
             robotOne.setMovementPoints(api.apiRobotsRobotIdGet(robotOneId).getMovementRate());
+            robotOne.setHp(api.apiRobotsRobotIdGet(robotOneId).getHealth().intValue());
+            robotOne.setDamage(api.apiRobotsRobotIdGet(robotOneId).getAttackDamage().intValue());
+            robotOne.setRange(api.apiRobotsRobotIdGet(robotOneId).getAttackRange().intValue());
+
+            robotTwo.setName("Enemy");
+            robotTwo.setAvatar("E");
             robotTwo.setMovementPoints(api.apiRobotsRobotIdGet(robotTwoId).getMovementRate());
+            robotTwo.setHp(api.apiRobotsRobotIdGet(robotTwoId).getHealth().intValue());
+            robotTwo.setDamage(api.apiRobotsRobotIdGet(robotTwoId).getAttackDamage().intValue());
+            robotTwo.setRange(api.apiRobotsRobotIdGet(robotTwoId).getAttackRange().intValue());
 
             String firstRobotId, secondRobotId, firstPlayerId, secondPlayerId;
             LocalRobot firstRobot, secondRobot;

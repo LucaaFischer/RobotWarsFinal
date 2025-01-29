@@ -22,39 +22,44 @@ public class MoveServices {
         Scanner input = new Scanner(System.in);
         int index = robotTurn.getIndex();
 
-        double mapSizeX = (double) api.apiMapsMapIdGet(mapId).get("mapSizeX");
-        int[] currCoordinates = MapServices.getCoordinates(index, (int) mapSizeX);
-        int[] newCoordinates = new int[2];
+        try {
+            double mapSizeX = (double) api.apiMapsMapIdGet(mapId).get("mapSizeX");
+            int[] currCoordinates = MapServices.getCoordinates(index, (int) mapSizeX);
+            int[] newCoordinates = new int[2];
 
-        NewMove newMove = new NewMove();
+            NewMove newMove = new NewMove();
 
-        System.out.println("Where u wanna move?");
-        AskForDirection.whichDirection();
+            System.out.println("Where u wanna move?");
+            AskForDirection.whichDirection();
 
-        String intendedMove = input.nextLine();
-        Align align = Align.NW;
+            String intendedMove = input.nextLine();
+            Align align = Align.NW;
 
-        for (Directions direction : Directions.values()) {
-            if(intendedMove.equalsIgnoreCase(direction.key)) {
-                newCoordinates[0] = currCoordinates[0] + direction.x;
-                newCoordinates[1] = currCoordinates[1] + direction.y;
-                align = InvertDirections.invertDirection(direction);
+            for (Directions direction : Directions.values()) {
+                if (intendedMove.equalsIgnoreCase(direction.key)) {
+                    newCoordinates[0] = currCoordinates[0] + direction.x;
+                    newCoordinates[1] = currCoordinates[1] + direction.y;
+                    align = InvertDirections.invertDirection(direction);
+                }
             }
+
+            BigDecimal newMapIndex = BigDecimal.valueOf(MapServices.coordinatesToMapIndex((int) mapSizeX, newCoordinates));
+
+            robotTurn.setIndex(newMapIndex.intValue());
+            newMove.setMapIndex(newMapIndex);
+            newMove.setPlayerId(playerID);
+            newMove.setMovementType(MovementType.MOVE);
+            newMove.setAlign(align);
+
+            System.out.println(playerID);
+            System.out.println(MovementType.MOVE.getValue());
+            System.out.println(align.toString());
+
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
+        } catch (ApiException e) {
+            System.out.println(e.getResponseBody());
         }
-
-        BigDecimal newMapIndex = BigDecimal.valueOf(MapServices.coordinatesToMapIndex((int)mapSizeX, newCoordinates));
-
-        robotTurn.setIndex(newMapIndex.intValue());
-        newMove.setMapIndex(newMapIndex);
-        newMove.setPlayerId(playerID);
-        newMove.setMovementType(MovementType.MOVE);
-        newMove.setAlign(align);
-
-        System.out.println(playerID);
-        System.out.println(MovementType.MOVE.getValue());
-        System.out.println(align.toString());
-
-        return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
+        return null;
     }
 
     public static String makeAlign(DefaultApi api, String gameID, String playerID, LocalRobot robot) {
@@ -75,6 +80,7 @@ public class MoveServices {
                 }
             }
 
+            robot.setIndex(robot.getIndex());
             newMove.setAlign(align);
             newMove.setPlayerId(playerID);
             newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));

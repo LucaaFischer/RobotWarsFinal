@@ -16,15 +16,13 @@ public class GameController {
         String moveID = "invalid";
 
         do {
-        System.out.println("Player " + playerId + " turn");
+        System.out.println("\n" +robotTurn.getName() + " turn");
         System.out.println("What wanna do? \n (1) Move \n (2) Align \n (3) Attack");
         String intendedAction = input.nextLine();
 
             if (intendedAction.equals("1")) {
                 moveID = MoveServices.makeMove(api, gameId, playerId, mapId, robotTurn);
             } else if (intendedAction.equals("2")) {
-                System.out.println("index RobotTurn before align:" +robotTurn.getIndex());
-                System.out.println("index RobotNotTurn before align" +robotNotTurn.getIndex());
                 moveID = MoveServices.makeAlign(api, gameId, playerId, robotTurn);
             } else if (intendedAction.equals("3")) {
                 moveID = MoveServices.attack(api, gameId, playerId, mapId, robotTurn);
@@ -36,6 +34,8 @@ public class GameController {
             System.out.println("Moves left: " + movementThisRound);
 
         } while (movementThisRound > 0);
+
+        PrintStats.printStats(robotTurn, robotNotTurn);
 
         //MoveServices.getMovesAfter(api, moveID);
     }

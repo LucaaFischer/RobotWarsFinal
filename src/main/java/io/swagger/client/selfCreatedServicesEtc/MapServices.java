@@ -31,8 +31,10 @@ public class MapServices {
         for (int i = 0; i < mapSize / mapSizeX; i++) {
             System.out.println();
             for (int j = 0; j < mapSizeX; j++) {
-                if (index == robot.getIndex() || index == robotTwo.getIndex()) {
-                    System.out.print("[ R ]");
+                if (index == robot.getIndex()) {
+                    System.out.print("[ " + robot.getAvatar() + " ]");
+                } else if(index == robotTwo.getIndex()) {
+                    System.out.print("[ " + robotTwo.getAvatar() + " ]");
                 } else {
                     System.out.print(gameMap[index]);
                 }

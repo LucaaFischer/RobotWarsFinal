@@ -2,16 +2,13 @@ package io.swagger.client.selfCreatedServicesEtc;
 
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
-
-import java.util.Scanner;
+import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForGameID;
+import io.swagger.client.selfCreatedServicesEtc.AskForIDs.AskForRobotID;
 
 public class JoiningGame {
     public static void join(DefaultApi api) throws ApiException, InterruptedException {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter gameId");
-        String gameId = input.nextLine();
-        System.out.println("Enter robotId");
-        String robotId = input.nextLine();
+        String gameId = AskForGameID.askForID();
+        String robotId = AskForRobotID.askForRobotID();
 
         String playerTwoId = GameServices.joinGame(api, gameId, robotId);
         System.out.println("PlayerIDTwo: " +playerTwoId);
