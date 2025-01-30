@@ -1,6 +1,7 @@
 package io.swagger.client.selfCreatedServicesEtc.LocalRobots;
 
 import io.swagger.client.model.Align;
+import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ public class LocalRobot {
     protected int damage;
     protected int range;
     protected String lastMoveId;
+    protected Directions direction;
 
     public LocalRobot() {
     }
@@ -75,6 +77,14 @@ public class LocalRobot {
 
     public void setRange(int range) {
         this.range = range;
+    }
+
+    public Directions getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Directions direction) {
+        this.direction = direction;
     }
 
     public String getLastMoveId() {

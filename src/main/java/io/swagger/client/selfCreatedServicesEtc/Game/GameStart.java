@@ -5,9 +5,8 @@ import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Align;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.PlayerRobot;
-import io.swagger.client.selfCreatedServicesEtc.IWillFindYou;
+import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
-import io.swagger.client.selfCreatedServicesEtc.Player;
 
 import java.util.List;
 
@@ -30,11 +29,13 @@ public class GameStart {
             robotOne.setHp(api.apiRobotsRobotIdGet(robotOneId).getHealth().intValue());
             robotOne.setDamage(api.apiRobotsRobotIdGet(robotOneId).getAttackDamage().intValue());
             robotOne.setRange(api.apiRobotsRobotIdGet(robotOneId).getAttackRange().intValue());
+            robotOne.setDirection(Directions.NORTH);
 
             robotTwo.setMovementPoints(api.apiRobotsRobotIdGet(robotTwoId).getMovementRate());
             robotTwo.setHp(api.apiRobotsRobotIdGet(robotTwoId).getHealth().intValue());
             robotTwo.setDamage(api.apiRobotsRobotIdGet(robotTwoId).getAttackDamage().intValue());
             robotTwo.setRange(api.apiRobotsRobotIdGet(robotTwoId).getAttackRange().intValue());
+            robotTwo.setDirection(Directions.NORTH);
 
             String firstRobotId, secondRobotId, firstPlayerId, secondPlayerId;
             LocalRobot firstRobot, secondRobot;
@@ -46,10 +47,10 @@ public class GameStart {
                 secondRobotId = robotTwoId;
                 firstPlayerId = playerOneId;
                 secondPlayerId = playerTwoId;
-                firstRobot.setName("You");
-                firstRobot.setAvatar("Y");
-                secondRobot.setName("Enemy");
-                secondRobot.setAvatar("E");
+                firstRobot.setName("Enemy");
+                firstRobot.setAvatar("E");
+                secondRobot.setName("You");
+                secondRobot.setAvatar("Y");
             } else {
                 firstRobot = robotTwo;
                 secondRobot = robotOne;
@@ -57,10 +58,10 @@ public class GameStart {
                 secondRobotId = robotOneId;
                 firstPlayerId = playerTwoId;
                 secondPlayerId = playerOneId;
-                firstRobot.setName("Enemy");
-                firstRobot.setAvatar("E");
-                secondRobot.setName("You");
-                secondRobot.setAvatar("Y");
+                firstRobot.setName("You");
+                firstRobot.setAvatar("Y");
+                secondRobot.setName("Enemy");
+                secondRobot.setAvatar("E");
             }
 
             firstRobot.setIndex(firstMoves.get(0).getMapIndex().intValue());

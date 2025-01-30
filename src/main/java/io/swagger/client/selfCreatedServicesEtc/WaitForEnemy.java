@@ -11,27 +11,33 @@ import io.swagger.client.selfCreatedServicesEtc.Services.MoveServices;
 import java.util.List;
 
 public class WaitForEnemy {
-    public static void wait(DefaultApi api, String gameId, String moveId, LocalRobot enemyRobot, LocalRobot yourRobot, String playerId, int movementThisTurn)
+    public static void wait(DefaultApi api, String gameId, String moveId, LocalRobot enemyRobot, LocalRobot yourRobot, int movementThisTurn, int counter)
             throws ApiException {
         do {
-            if (moveId.equals(MoveServices.getMovesAfter(api, gameId, moveId).getLast().getId())) {
-                wait(api, gameId, moveId, enemyRobot, yourRobot, playerId, movementThisTurn);
-            } else {
-                List<Move> moves = MoveServices.getMovesAfter(api, gameId, moveId);
-                moveId = moves.getLast().getId();
+            List<Move> moves = MoveServices.getMovesAfter(api, gameId, moveId);
 
-                enemyRobot.setLastMoveId(moveId);
-                ExecuteEnemyMove.enemyMove(api, enemyRobot, gameId);
-                MapServices.printMap(api, gameId, enemyRobot, yourRobot);
-                System.out.println(moveId);
-                System.out.println("Enemy made move: " + moves.getLast().getMovementType());
-                movementThisTurn--;
-                if(moves.getLast().getMovementType().equals(MovementType.END) && moves.size() > 1) {
-                    movementThisTurn = 0;
+            if (moves.isEmpty() || moveId.equals(moves.getLast().getId())) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
+                continue;
             }
-        } while (movementThisTurn > 0);
 
-        MoveServices.endMove(api, gameId, playerId, enemyRobot);
+            moveId = moves.getLast().getId();
+            enemyRobot.setLastMoveId(moveId);
+            ExecuteEnemyMove.enemyMove(api, enemyRobot, gameId);
+            MapServices.printMap(api, gameId, enemyRobot, yourRobot);
+            System.out.println(moveId);
+            System.out.println("Enemy made move: " + moves.getLast().getMovementType());
+            movementThisTurn--;
+
+            if (moves.getLast().getMovementType().equals(MovementType.END) && counter > 0) {
+                break;
+            }
+
+            counter++;
+        } while (movementThisTurn > 0);
     }
 }

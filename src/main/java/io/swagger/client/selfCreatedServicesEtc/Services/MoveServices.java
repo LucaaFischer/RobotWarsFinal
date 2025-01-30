@@ -1,11 +1,13 @@
 package io.swagger.client.selfCreatedServicesEtc.Services;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.CheckAttackPossible;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Align;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.MovementType;
 import io.swagger.client.model.NewMove;
+import io.swagger.client.selfCreatedServicesEtc.AttackNotPossible;
 import io.swagger.client.selfCreatedServicesEtc.Combat.FightController;
 import io.swagger.client.selfCreatedServicesEtc.Combat.FightView;
 import io.swagger.client.selfCreatedServicesEtc.Directions.AskForDirection;
@@ -76,6 +78,7 @@ public class MoveServices {
             for (Directions direction : Directions.values()) {
                 if (intendedMove.equalsIgnoreCase(direction.key)) {
                     align = InvertDirections.invertDirection(direction);
+                    robot.setDirection(direction);
                 }
             }
 
@@ -93,28 +96,28 @@ public class MoveServices {
     }
 
     public static String attack(DefaultApi api, String gameId, String playerId, String mapId, LocalRobot robotTurn, LocalRobot robotNotTurn) {
+        String moveId = null;
         try {
-            FightView.attackMessage();
-            FightController.fight(robotTurn, robotNotTurn);
+            if (CheckAttackPossible.attackPossible(api, mapId, robotTurn, robotNotTurn)) {
+                FightController.fight(robotTurn, robotNotTurn);
 
-            NewMove newMove = newMoveTemplate(playerId, robotTurn.getIndex(), robotTurn.getAlign(), MovementType.ATTACK);
+                NewMove newMove = newMoveTemplate(playerId, robotTurn.getIndex(), robotTurn.getAlign(), MovementType.ATTACK);
 
-            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameId, playerId).getId();
-        }
-
-        catch (ApiException e) {
+                moveId = api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameId, playerId).getId();
+            } else {
+                AttackNotPossible.message();
+            }
+        } catch (ApiException e) {
             System.out.println(e.getResponseBody());
         }
-        return null;
+        return moveId;
     }
 
     public static String endMove(DefaultApi api, String gameID, String playerId, LocalRobot robot) {
         try {
             NewMove newMove = newMoveTemplate(playerId, robot.getIndex(), robot.getAlign(), MovementType.END);
             return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerId).getId();
-        }
-
-        catch (ApiException e) {
+        } catch (ApiException e) {
             System.out.println(e.getResponseBody());
         }
         return null;

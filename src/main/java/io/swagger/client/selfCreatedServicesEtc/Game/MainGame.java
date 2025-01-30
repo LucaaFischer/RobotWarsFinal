@@ -15,8 +15,8 @@ public class MainGame {
                                 LocalRobot firstRobot, LocalRobot secondRobot) throws ApiException {
         int countTurns = 0;
 
-        System.out.println("Roboter 1: " +firstRobot.getName());
-        System.out.println("Roboter 2: " +secondRobot.getName());
+        System.out.println("Robot 1: " +firstRobot.getName());
+        System.out.println("Robot 2: " +secondRobot.getName());
 
         while (countTurns < 100) {
             List<Move> previousMoves = api.apiGamesGameIdGet(gameId).getMoves();
@@ -25,14 +25,14 @@ public class MainGame {
                     GameController.turn(api, gameId, mapId, firstRobotId, firstPlayerId, firstRobot, secondRobot);
 
                 } else {
-                    WaitForEnemy.wait(api, gameId, previousMoves.getLast().getId(), firstRobot, secondRobot, firstPlayerId, firstRobot.getMovementPoints().intValue());
+                    WaitForEnemy.wait(api, gameId, previousMoves.getLast().getId(), firstRobot, secondRobot, firstRobot.getMovementPoints().intValue(), 0);
                 }
 
             } else {
                 if(secondRobot.getName().equals("You")) {
                     GameController.turn(api, gameId, mapId, secondRobotId, secondPlayerId, secondRobot, firstRobot);
                 } else {
-                    WaitForEnemy.wait(api, gameId, previousMoves.getLast().getId(), secondRobot, firstRobot, secondPlayerId, secondRobot.getMovementPoints().intValue());
+                    WaitForEnemy.wait(api, gameId, previousMoves.getLast().getId(), secondRobot, firstRobot, secondRobot.getMovementPoints().intValue(), 0);
                 }
             }
             PrintStats.printStats(firstRobot, secondRobot);
