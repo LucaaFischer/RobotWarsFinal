@@ -13,6 +13,7 @@ public class LocalRobot {
     protected int hp;
     protected int damage;
     protected int range;
+    protected String lastMoveId;
 
     public LocalRobot() {
     }
@@ -74,6 +75,14 @@ public class LocalRobot {
 
     public void setRange(int range) {
         this.range = range;
+    }
+
+    public String getLastMoveId() {
+        return lastMoveId;
+    }
+
+    public void setLastMoveId(String lastMoveId) {
+        this.lastMoveId = lastMoveId;
     }
 }
 

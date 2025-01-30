@@ -6,9 +6,12 @@ import io.swagger.client.model.Align;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.MovementType;
 import io.swagger.client.model.NewMove;
+import io.swagger.client.selfCreatedServicesEtc.Combat.FightController;
+import io.swagger.client.selfCreatedServicesEtc.Combat.FightView;
 import io.swagger.client.selfCreatedServicesEtc.Directions.AskForDirection;
 import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
 import io.swagger.client.selfCreatedServicesEtc.Directions.InvertDirections;
+import io.swagger.client.selfCreatedServicesEtc.Game.MainGame;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 
 import java.math.BigDecimal;
@@ -20,7 +23,7 @@ public class MoveServices {
         return api.apiGamesGameIdMoveGet(moveID);
     }
 
-    public static String makeMove(DefaultApi api, String gameID, String playerID, String mapId, LocalRobot robot) throws ApiException {
+    public static String makeMove(DefaultApi api, String gameID, String playerID, String mapId, LocalRobot robot) {
         Scanner input = new Scanner(System.in);
         int index = robot.getIndex();
 
@@ -28,14 +31,12 @@ public class MoveServices {
             double mapSizeX = (double) api.apiMapsMapIdGet(mapId).get("mapSizeX");
             int[] currCoordinates = MapServices.getCoordinates(index, (int) mapSizeX);
             int[] newCoordinates = new int[2];
-
-            NewMove newMove = new NewMove();
+            Align align = Align.NW;
 
             System.out.println("Where u wanna move?");
             AskForDirection.whichDirection();
 
             String intendedMove = input.nextLine();
-            Align align = Align.NW;
 
             for (Directions direction : Directions.values()) {
                 if (intendedMove.equalsIgnoreCase(direction.key)) {
@@ -45,31 +46,26 @@ public class MoveServices {
                 }
             }
 
-            BigDecimal newMapIndex = BigDecimal.valueOf(MapServices.coordinatesToMapIndex((int) mapSizeX, newCoordinates));
+            int newMapIndex = MapServices.coordinatesToMapIndex((int) mapSizeX, newCoordinates);
 
-            robot.setIndex(newMapIndex.intValue());
+            NewMove newMove = newMoveTemplate(playerID, newMapIndex, align, MovementType.MOVE);
+            String moveId = api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
+
+            robot.setIndex(newMapIndex);
             robot.setAlign(align);
-            newMove.setMapIndex(newMapIndex);
-            newMove.setPlayerId(playerID);
-            newMove.setMovementType(MovementType.MOVE);
-            newMove.setAlign(align);
 
-            System.out.println(playerID);
-            System.out.println(MovementType.MOVE.getValue());
-            System.out.println(align.toString());
+            return moveId;
 
-            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
         } catch (ApiException e) {
             System.out.println(e.getResponseBody());
         }
         return null;
     }
 
-    public static String makeAlign(DefaultApi api, String gameID, String playerID, LocalRobot robot) {
+    public static String makeAlign(DefaultApi api, String gameID, String playerId, LocalRobot robot) {
         try {
             Scanner input = new Scanner(System.in);
             String intendedMove;
-            NewMove newMove = new NewMove();
             System.out.println("Where u wanna align?");
             AskForDirection.whichDirection();
 
@@ -85,38 +81,56 @@ public class MoveServices {
 
             robot.setIndex(robot.getIndex());
             robot.setAlign(align);
-            newMove.setAlign(align);
-            newMove.setPlayerId(playerID);
-            newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
-            newMove.setMovementType(MovementType.ALIGN);
 
-            System.out.println("NewMove MapIndex" +newMove.getMapIndex());
+            NewMove newMove = newMoveTemplate(playerId, robot.getIndex(), align, MovementType.ALIGN);
 
-            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerID).getId();
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerId).getId();
+
+        } catch (ApiException e) {
+            System.out.println(e.getResponseBody());
         }
+        return null;
+    }
+
+    public static String attack(DefaultApi api, String gameId, String playerId, String mapId, LocalRobot robotTurn, LocalRobot robotNotTurn) {
+        try {
+            FightView.attackMessage();
+            FightController.fight(robotTurn, robotNotTurn);
+
+            NewMove newMove = newMoveTemplate(playerId, robotTurn.getIndex(), robotTurn.getAlign(), MovementType.ATTACK);
+
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameId, playerId).getId();
+        }
+
         catch (ApiException e) {
             System.out.println(e.getResponseBody());
         }
         return null;
     }
 
-    public static String endMove(DefaultApi api, String gameID, String playerId, LocalRobot robot) throws ApiException {
+    public static String endMove(DefaultApi api, String gameID, String playerId, LocalRobot robot) {
+        try {
+            NewMove newMove = newMoveTemplate(playerId, robot.getIndex(), robot.getAlign(), MovementType.END);
+            return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerId).getId();
+        }
+
+        catch (ApiException e) {
+            System.out.println(e.getResponseBody());
+        }
+        return null;
+    }
+
+    public static List<Move> getMovesAfter(DefaultApi api, String gameId, String moveId) throws ApiException {
+        return api.apiGamesGameIdMoveMoveIdAfterGet(gameId, moveId);
+    }
+
+    public static NewMove newMoveTemplate(String playerId, int newMapIndex, Align align, MovementType movementType) {
         NewMove newMove = new NewMove();
-
-        robot.setIndex(robot.getIndex());
-        newMove.setAlign(robot.getAlign());
         newMove.setPlayerId(playerId);
-        newMove.setMapIndex(BigDecimal.valueOf(robot.getIndex()));
-        newMove.setMovementType(MovementType.END);
+        newMove.setMapIndex(BigDecimal.valueOf(newMapIndex));
+        newMove.setAlign(align);
+        newMove.setMovementType(movementType);
 
-        return api.apiGamesGameIdMovePlayerPlayerIdPost(newMove, gameID, playerId).getId();
-    }
-
-    public static String attack(DefaultApi api, String gameId, String playerId, String mapId, LocalRobot robotOne) {
-        return "UwU";
-    }
-
-    public static List<Move> getMovesAfter(DefaultApi api, String moveID) throws ApiException {
-        return api.apiGamesGameIdMoveGet(moveID);
+        return newMove;
     }
 }

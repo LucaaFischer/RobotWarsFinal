@@ -4,7 +4,7 @@ import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.PrintStats;
 
 public class FightController {
-    public void fight(LocalRobot robotTurn, LocalRobot robotNotTurn) {
+    public static void fight(LocalRobot robotTurn, LocalRobot robotNotTurn) {
         FightView.attackMessage();
 
         robotNotTurn.setHp(robotNotTurn.getHp() - robotTurn.getDamage());
@@ -18,7 +18,7 @@ public class FightController {
     }
 
     //------------------------------------------------------------Überprüfen OB es einen Gewinner gibt--------------------------------------------------------------------
-    public boolean checkWin(LocalRobot robot1, LocalRobot robot2) {
+    public static boolean checkWin(LocalRobot robot1, LocalRobot robot2) {
         return robot1.getHp() <= 0 || robot2.getHp() <= 0;
     }
 
