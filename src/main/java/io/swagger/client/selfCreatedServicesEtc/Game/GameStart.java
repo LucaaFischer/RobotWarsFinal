@@ -37,20 +37,20 @@ public class GameStart {
                 secondRobot = robotTwo;
                 firstPlayerId = playerOneId;
                 secondPlayerId = playerTwoId;
-                firstRobot.setName("Enemy");
-                firstRobot.setAvatar("E");
-                secondRobot.setName("You");
-                secondRobot.setAvatar("Y");
+                firstRobot.setName("You");
+                firstRobot.setAvatar("Y");
+                secondRobot.setName("Enemy");
+                secondRobot.setAvatar("E");
 
             } else {
                 firstRobot = robotTwo;
                 secondRobot = robotOne;
                 firstPlayerId = playerTwoId;
                 secondPlayerId = playerOneId;
-                firstRobot.setName("You");
-                firstRobot.setAvatar("Y");
-                secondRobot.setName("Enemy");
-                secondRobot.setAvatar("E");
+                firstRobot.setName("Enemy");
+                firstRobot.setAvatar("E");
+                secondRobot.setName("You");
+                secondRobot.setAvatar("Y");
             }
 
             firstRobot.setIndex(firstMoves.getFirst().getMapIndex().intValue());

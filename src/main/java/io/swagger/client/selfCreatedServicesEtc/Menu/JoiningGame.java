@@ -16,7 +16,7 @@ public class JoiningGame {
         String robotId = AskForRobotID.askForRobotID();
 
         String playerTwoId = GameServices.joinGame(api, gameId, robotId);
-        System.out.println("PlayerIDTwo: " +playerTwoId);
+        System.out.println("PlayerID: " +playerTwoId);
         String mapId = api.apiGamesGameIdGet(gameId).getMap();
 
         GameStart.startGame(api, gameId, mapId);

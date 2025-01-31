@@ -16,34 +16,34 @@ public class WaitForEnemy {
             throws ApiException {
         int counter = 0;
 
+        System.out.println("Enemy's turn. Waiting for move...");
+
         do {
             List<Move> moves = MoveServices.getMovesAfter(api, gameId, moveId);
 
             if (moves.isEmpty() || moveId.equals(moves.getLast().getId())) {
                 try {
-                    System.out.println("Enemy's turn. Waiting for move...");
-                    Thread.sleep(3000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-                continue;
+            } else {
+
+                moveId = moves.getLast().getId();
+                enemyRobot.setLastMoveId(moveId);
+                ExecuteEnemyMove.enemyMove(api, enemyRobot, gameId);
+                MapServices.printMap(api, gameId, enemyRobot, yourRobot);
+                movementThisTurn--;
+
+                System.out.println("\nEnemy made move: " + moves.getLast().getMovementType());
+                System.out.println("He's now on Field " + moves.getLast().getMapIndex());
+                MovesLeftMessage.movesLeft(movementThisTurn);
+
+                if (moves.getLast().getMovementType().equals(MovementType.END) && counter > 0) {
+                    break;
+                }
+                counter++;
             }
-
-            moveId = moves.getLast().getId();
-            enemyRobot.setLastMoveId(moveId);
-            ExecuteEnemyMove.enemyMove(api, enemyRobot, gameId);
-            MapServices.printMap(api, gameId, enemyRobot, yourRobot);
-            movementThisTurn--;
-
-            System.out.println("\nEnemy made move: " + moves.getLast().getMovementType());
-            System.out.println("He's now on Field " +moves.getLast().getMapIndex());
-            MovesLeftMessage.movesLeft(movementThisTurn);
-
-            if (moves.getLast().getMovementType().equals(MovementType.END) && counter > 0) {
-                break;
-            }
-
-            counter++;
         } while (movementThisTurn > 0);
     }
 }
