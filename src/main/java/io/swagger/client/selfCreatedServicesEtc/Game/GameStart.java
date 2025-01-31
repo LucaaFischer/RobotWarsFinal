@@ -26,37 +26,25 @@ public class GameStart {
             String playerOneId = playerRobots.get(0).getPlayerId();
             String playerTwoId = playerRobots.get(1).getPlayerId();
 
-            robotOne.setMovementPoints(api.apiRobotsRobotIdGet(robotOneId).getMovementRate());
-            robotOne.setHp(api.apiRobotsRobotIdGet(robotOneId).getHealth().intValue());
-            robotOne.setDamage(api.apiRobotsRobotIdGet(robotOneId).getAttackDamage().intValue());
-            robotOne.setRange(api.apiRobotsRobotIdGet(robotOneId).getAttackRange().intValue());
-            robotOne.setDirection(Directions.NORTH);
+            setRobotStats(api, robotOne, robotOneId);
+            setRobotStats(api, robotTwo, robotTwoId);
 
-            robotTwo.setMovementPoints(api.apiRobotsRobotIdGet(robotTwoId).getMovementRate());
-            robotTwo.setHp(api.apiRobotsRobotIdGet(robotTwoId).getHealth().intValue());
-            robotTwo.setDamage(api.apiRobotsRobotIdGet(robotTwoId).getAttackDamage().intValue());
-            robotTwo.setRange(api.apiRobotsRobotIdGet(robotTwoId).getAttackRange().intValue());
-            robotTwo.setDirection(Directions.NORTH);
-
-            String firstRobotId, secondRobotId, firstPlayerId, secondPlayerId;
+            String firstPlayerId, secondPlayerId;
             LocalRobot firstRobot, secondRobot;
 
             if (TurnOrder.getStartingRobot(robotOne, robotTwo) == 1) {
                 firstRobot = robotOne;
                 secondRobot = robotTwo;
-                firstRobotId = robotOneId;
-                secondRobotId = robotTwoId;
                 firstPlayerId = playerOneId;
                 secondPlayerId = playerTwoId;
                 firstRobot.setName("Enemy");
                 firstRobot.setAvatar("E");
                 secondRobot.setName("You");
                 secondRobot.setAvatar("Y");
+
             } else {
                 firstRobot = robotTwo;
                 secondRobot = robotOne;
-                firstRobotId = robotTwoId;
-                secondRobotId = robotOneId;
                 firstPlayerId = playerTwoId;
                 secondPlayerId = playerOneId;
                 firstRobot.setName("You");
@@ -65,14 +53,23 @@ public class GameStart {
                 secondRobot.setAvatar("E");
             }
 
-            firstRobot.setIndex(firstMoves.get(0).getMapIndex().intValue());
-            firstRobot.setLastMoveId(firstMoves.get(0).getId());
-            secondRobot.setIndex(firstMoves.get(1).getMapIndex().intValue());
-            secondRobot.setLastMoveId(firstMoves.get(1).getId());
+            firstRobot.setIndex(firstMoves.getFirst().getMapIndex().intValue());
+            firstRobot.setLastMoveId(firstMoves.getFirst().getId());
             firstRobot.setAlign(Align.N);
+
+            secondRobot.setIndex(firstMoves.getLast().getMapIndex().intValue());
+            secondRobot.setLastMoveId(firstMoves.getLast().getId());
             secondRobot.setAlign(Align.N);
 
             MainGame.playGame(api, gameId, mapId, firstPlayerId, secondPlayerId, firstRobot, secondRobot);
         }
+    }
+
+    public static void setRobotStats(DefaultApi api, LocalRobot robot, String robotId) throws ApiException {
+        robot.setMovementPoints(api.apiRobotsRobotIdGet(robotId).getMovementRate());
+        robot.setHp(api.apiRobotsRobotIdGet(robotId).getHealth().intValue());
+        robot.setDamage(api.apiRobotsRobotIdGet(robotId).getAttackDamage().intValue());
+        robot.setRange(api.apiRobotsRobotIdGet(robotId).getAttackRange().intValue());
+        robot.setDirection(Directions.NORTH);
     }
 }
