@@ -5,6 +5,7 @@ import io.swagger.client.MovesLeftMessage;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.MovementType;
+import io.swagger.client.selfCreatedServicesEtc.Combat.FightController;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import io.swagger.client.selfCreatedServicesEtc.Services.MapServices;
 import io.swagger.client.selfCreatedServicesEtc.Services.MoveServices;
@@ -44,6 +45,6 @@ public class WaitForEnemy {
                 }
                 counter++;
             }
-        } while (movementThisTurn > 0);
+        } while (movementThisTurn > 0 && !FightController.checkWin(yourRobot, enemyRobot));
     }
 }

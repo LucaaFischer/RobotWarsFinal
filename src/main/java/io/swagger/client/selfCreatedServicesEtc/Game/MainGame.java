@@ -3,6 +3,7 @@ package io.swagger.client.selfCreatedServicesEtc.Game;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Move;
+import io.swagger.client.selfCreatedServicesEtc.Combat.FightController;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.PrintStats;
 import io.swagger.client.selfCreatedServicesEtc.WaitForEnemy;
@@ -18,7 +19,7 @@ public class MainGame {
         System.out.println("Robot 2: " +secondRobot.getName());
         PrintStats.printStats(firstRobot, secondRobot);
 
-        while (countTurns < 100) {
+        while (countTurns < 100 && !FightController.checkWin(firstRobot, secondRobot)) {
             List<Move> previousMoves = api.apiGamesGameIdGet(gameId).getMoves();
             if (countTurns % 2 == 0) {
                 if(firstRobot.getName().equals("You")) {
