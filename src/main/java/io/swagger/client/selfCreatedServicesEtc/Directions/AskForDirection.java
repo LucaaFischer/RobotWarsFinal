@@ -9,7 +9,6 @@ public class AskForDirection {
                 "South (S) \n" +
                 "South-West (Y) \n" +
                 "West (A) \n" +
-                "North-West (Q) \n \n" +
-                "or stay on current field (B)");
+                "North-West (Q)\n");
     }
 }

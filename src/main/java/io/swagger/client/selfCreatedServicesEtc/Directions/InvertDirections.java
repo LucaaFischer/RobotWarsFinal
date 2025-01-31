@@ -13,13 +13,4 @@ public class InvertDirections {
         }
         return null;
     }
-
-    public static Directions invertAlign(Align align) {
-        for (Directions direction : Directions.values()) {
-            if (Objects.equals(direction.freddyKey, align.getValue())) {
-                return direction;
-            }
-        }
-        return null;
-    }
 }

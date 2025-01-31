@@ -72,7 +72,7 @@ public class GameStart {
             firstRobot.setAlign(Align.N);
             secondRobot.setAlign(Align.N);
 
-            MainGame.playGame(api, gameId, mapId, firstRobotId, firstPlayerId, secondRobotId, secondPlayerId, firstRobot, secondRobot);
+            MainGame.playGame(api, gameId, mapId, firstPlayerId, secondPlayerId, firstRobot, secondRobot);
         }
     }
 }

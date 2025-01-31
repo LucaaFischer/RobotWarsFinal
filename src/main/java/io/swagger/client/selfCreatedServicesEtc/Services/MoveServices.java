@@ -21,10 +21,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MoveServices {
-    public List<Move> getMoveAfter(DefaultApi api, String moveID) throws ApiException {
-        return api.apiGamesGameIdMoveGet(moveID);
-    }
-
     public static String makeMove(DefaultApi api, String gameID, String playerID, String mapId, LocalRobot robot) {
         Scanner input = new Scanner(System.in);
         int index = robot.getIndex();

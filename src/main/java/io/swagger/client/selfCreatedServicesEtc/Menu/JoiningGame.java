@@ -14,7 +14,6 @@ public class JoiningGame {
     public static void join(DefaultApi api) throws ApiException, InterruptedException {
         String gameId = AskForGameID.askForID();
         String robotId = AskForRobotID.askForRobotID();
-        List<PlayerRobot> players = api.apiGamesGameIdGet(gameId).getPlayer();
 
         String playerTwoId = GameServices.joinGame(api, gameId, robotId);
         System.out.println("PlayerIDTwo: " +playerTwoId);

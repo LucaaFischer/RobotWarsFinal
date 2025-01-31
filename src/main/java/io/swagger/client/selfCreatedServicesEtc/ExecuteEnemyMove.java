@@ -5,10 +5,7 @@ import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Align;
 import io.swagger.client.model.Move;
 import io.swagger.client.model.MovementType;
-import io.swagger.client.model.NewMove;
-import io.swagger.client.selfCreatedServicesEtc.Directions.AskForDirection;
 import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
-import io.swagger.client.selfCreatedServicesEtc.Directions.InvertDirections;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import io.swagger.client.selfCreatedServicesEtc.Services.MapServices;
 

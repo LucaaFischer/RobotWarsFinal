@@ -1,6 +1,7 @@
 package io.swagger.client.selfCreatedServicesEtc.Game;
 
 import io.swagger.client.ApiException;
+import io.swagger.client.MovesLeftMessage;
 import io.swagger.client.api.DefaultApi;
 import io.swagger.client.model.Game;
 import io.swagger.client.model.MovementType;
@@ -11,7 +12,7 @@ import io.swagger.client.selfCreatedServicesEtc.Services.MoveServices;
 import java.util.Scanner;
 
 public class GameController {
-    public static void turn(DefaultApi api, String gameId, String mapId, String robotID, String playerId, LocalRobot robotTurn, LocalRobot robotNotTurn)
+    public static void turn(DefaultApi api, String gameId, String mapId, String playerId, LocalRobot robotTurn, LocalRobot robotNotTurn)
             throws ApiException {
         Scanner input = new Scanner(System.in);
         String moveId = "";
@@ -36,6 +37,7 @@ public class GameController {
             MapServices.printMap(api, gameId, robotTurn, robotNotTurn);
             robotTurn.setLastMoveId(moveId);
             movementThisRound--;
+            MovesLeftMessage.movesLeft(movementThisRound);
         } while (movementThisRound > 0);
 
         if (movementThisRound == 0 && !api.apiGamesGameIdGet(gameId).getMoves().getLast().getMovementType().equals(MovementType.END)) {
