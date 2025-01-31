@@ -21,14 +21,13 @@ public class WaitForEnemy {
 
             if (moves.isEmpty() || moveId.equals(moves.getLast().getId())) {
                 try {
-                    Thread.sleep(100);
+                    System.out.println("Enemy's turn. Waiting for move...");
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
                 continue;
             }
-
-            System.out.println("Enemy's turn. Waiting for move...");
 
             moveId = moves.getLast().getId();
             enemyRobot.setLastMoveId(moveId);

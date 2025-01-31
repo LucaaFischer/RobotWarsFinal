@@ -16,6 +16,7 @@ public class MainGame {
 
         System.out.println("Robot 1: " +firstRobot.getName());
         System.out.println("Robot 2: " +secondRobot.getName());
+        PrintStats.printStats(firstRobot, secondRobot);
 
         while (countTurns < 100) {
             List<Move> previousMoves = api.apiGamesGameIdGet(gameId).getMoves();
