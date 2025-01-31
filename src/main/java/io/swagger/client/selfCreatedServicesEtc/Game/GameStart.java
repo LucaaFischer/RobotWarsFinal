@@ -11,8 +11,7 @@ import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import java.util.List;
 
 public class GameStart {
-    public static void startGame(DefaultApi api, String gameId, String mapId, String playerOneId, String playerTwoId)
-            throws InterruptedException, ApiException {
+    public static void startGame(DefaultApi api, String gameId, String mapId) throws InterruptedException, ApiException {
 
         if (GameController.waitForStart(api, gameId)) {
             List<Move> firstMoves = api.apiGamesGameIdMoveGet(gameId);
@@ -24,6 +23,8 @@ public class GameStart {
 
             String robotOneId = playerRobots.get(0).getRobotId();
             String robotTwoId = playerRobots.get(1).getRobotId();
+            String playerOneId = playerRobots.get(0).getPlayerId();
+            String playerTwoId = playerRobots.get(1).getPlayerId();
 
             robotOne.setMovementPoints(api.apiRobotsRobotIdGet(robotOneId).getMovementRate());
             robotOne.setHp(api.apiRobotsRobotIdGet(robotOneId).getHealth().intValue());

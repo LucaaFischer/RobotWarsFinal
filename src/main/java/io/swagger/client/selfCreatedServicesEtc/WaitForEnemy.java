@@ -25,12 +25,13 @@ public class WaitForEnemy {
                 continue;
             }
 
+            System.out.println("Enemy's turn. Waiting for move...");
             moveId = moves.getLast().getId();
             enemyRobot.setLastMoveId(moveId);
             ExecuteEnemyMove.enemyMove(api, enemyRobot, gameId);
             MapServices.printMap(api, gameId, enemyRobot, yourRobot);
-            System.out.println(moveId);
-            System.out.println("Enemy made move: " + moves.getLast().getMovementType());
+            System.out.println("\nEnemy made move: " + moves.getLast().getMovementType());
+            System.out.println("He's now on Field " +moves.getLast().getMapIndex());
             movementThisTurn--;
 
             if (moves.getLast().getMovementType().equals(MovementType.END) && counter > 0) {

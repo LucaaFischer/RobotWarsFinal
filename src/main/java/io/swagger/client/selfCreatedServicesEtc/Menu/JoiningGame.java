@@ -15,12 +15,11 @@ public class JoiningGame {
         String gameId = AskForGameID.askForID();
         String robotId = AskForRobotID.askForRobotID();
         List<PlayerRobot> players = api.apiGamesGameIdGet(gameId).getPlayer();
-        String playerOneId = players.get(0).getPlayerId();
 
         String playerTwoId = GameServices.joinGame(api, gameId, robotId);
         System.out.println("PlayerIDTwo: " +playerTwoId);
         String mapId = api.apiGamesGameIdGet(gameId).getMap();
 
-        GameStart.startGame(api, gameId, mapId, playerOneId, playerTwoId);
+        GameStart.startGame(api, gameId, mapId);
     }
 }
