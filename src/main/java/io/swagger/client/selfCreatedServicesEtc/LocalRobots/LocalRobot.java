@@ -6,6 +6,8 @@ import io.swagger.client.selfCreatedServicesEtc.Directions.Directions;
 import java.math.BigDecimal;
 
 public class LocalRobot {
+    protected String userId;
+    protected String robotId;
     protected String name;
     protected String avatar;
     protected int index;
@@ -18,6 +20,22 @@ public class LocalRobot {
     protected Directions direction;
 
     public LocalRobot() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getRobotId() {
+        return robotId;
+    }
+
+    public void setRobotId(String robotId) {
+        this.robotId = robotId;
     }
 
     public String getName() {

@@ -11,14 +11,13 @@ import io.swagger.client.selfCreatedServicesEtc.Services.GameServices;
 import java.util.List;
 
 public class JoiningGame {
-    public static void join(DefaultApi api) throws ApiException, InterruptedException {
-        String gameId = AskForGameID.askForID();
+    public static void join(DefaultApi api, String gameId) throws ApiException, InterruptedException {
         String robotId = AskForRobotID.askForRobotID();
 
-        String playerTwoId = GameServices.joinGame(api, gameId, robotId);
-        System.out.println("PlayerID: " +playerTwoId);
+        String yourPlayerId = GameServices.joinGame(api, gameId, robotId);
+        System.out.println("PlayerID: " +yourPlayerId);
         String mapId = api.apiGamesGameIdGet(gameId).getMap();
 
-        GameStart.startGame(api, gameId, mapId);
+        GameStart.startGame(api, gameId, mapId, yourPlayerId);
     }
 }

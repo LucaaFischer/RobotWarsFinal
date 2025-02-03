@@ -25,7 +25,7 @@ public class RobotWars {
             GameCreation.create(api);
 
         } else if (choice == 4) {
-            JoiningGame.join(api);
+            JoiningGame.join(api, AskForGameID.askForID());
 
         } else if (choice == 5) {
             System.out.println(RobotServices.getRobots(api));

@@ -11,8 +11,7 @@ import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import java.util.List;
 
 public class GameStart {
-    public static void startGame(DefaultApi api, String gameId, String mapId) throws InterruptedException, ApiException {
-
+    public static void startGame(DefaultApi api, String gameId, String mapId, String yourPlayerId) throws InterruptedException, ApiException {
         if (GameController.waitForStart(api, gameId)) {
             List<Move> firstMoves = api.apiGamesGameIdMoveGet(gameId);
 
@@ -23,30 +22,29 @@ public class GameStart {
 
             String robotOneId = playerRobots.get(0).getRobotId();
             String robotTwoId = playerRobots.get(1).getRobotId();
+
             String playerOneId = playerRobots.get(0).getPlayerId();
             String playerTwoId = playerRobots.get(1).getPlayerId();
 
-            setRobotStats(api, robotOne, robotOneId);
-            setRobotStats(api, robotTwo, robotTwoId);
+            setRobotStats(api, robotOne, robotOneId, playerOneId);
+            setRobotStats(api, robotTwo, robotTwoId, playerTwoId);
 
-            String firstPlayerId, secondPlayerId;
             LocalRobot firstRobot, secondRobot;
 
             if (TurnOrder.getStartingRobot(robotOne, robotTwo) == 1) {
                 firstRobot = robotOne;
                 secondRobot = robotTwo;
-                firstPlayerId = playerOneId;
-                secondPlayerId = playerTwoId;
+            } else {
+                firstRobot = robotTwo;
+                secondRobot = robotOne;
+            }
+
+            if(firstRobot.getUserId().equals(yourPlayerId)) {
                 firstRobot.setName("You");
                 firstRobot.setAvatar("Y");
                 secondRobot.setName("Enemy");
                 secondRobot.setAvatar("E");
-
             } else {
-                firstRobot = robotTwo;
-                secondRobot = robotOne;
-                firstPlayerId = playerTwoId;
-                secondPlayerId = playerOneId;
                 firstRobot.setName("Enemy");
                 firstRobot.setAvatar("E");
                 secondRobot.setName("You");
@@ -61,11 +59,13 @@ public class GameStart {
             secondRobot.setLastMoveId(firstMoves.getLast().getId());
             secondRobot.setAlign(Align.N);
 
-            MainGame.playGame(api, gameId, mapId, firstPlayerId, secondPlayerId, firstRobot, secondRobot);
+            MainGame.playGame(api, gameId, mapId, firstRobot, secondRobot);
         }
     }
 
-    public static void setRobotStats(DefaultApi api, LocalRobot robot, String robotId) throws ApiException {
+    public static void setRobotStats(DefaultApi api, LocalRobot robot, String robotId, String userId) throws ApiException {
+        robot.setUserId(userId);
+        robot.setRobotId(robotId);
         robot.setMovementPoints(api.apiRobotsRobotIdGet(robotId).getMovementRate());
         robot.setHp(api.apiRobotsRobotIdGet(robotId).getHealth().intValue());
         robot.setDamage(api.apiRobotsRobotIdGet(robotId).getAttackDamage().intValue());

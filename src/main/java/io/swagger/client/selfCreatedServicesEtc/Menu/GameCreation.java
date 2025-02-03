@@ -12,6 +12,6 @@ public class GameCreation {
         String gameId = GameServices.createGame(api, mapId);
         System.out.println("GameID: " + gameId);
 
-        JoiningGame.join(api);
+        JoiningGame.join(api, gameId);
     }
 }
