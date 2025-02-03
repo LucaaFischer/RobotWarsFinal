@@ -1,4 +1,4 @@
-package io.swagger.client.selfCreatedServicesEtc;
+package io.swagger.client.selfCreatedServicesEtc.Combat;
 
 public class AttackNotPossible {
     public static void message() {

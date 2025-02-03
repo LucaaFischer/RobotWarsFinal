@@ -6,7 +6,6 @@ import io.swagger.client.model.Move;
 import io.swagger.client.selfCreatedServicesEtc.Combat.FightController;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.LocalRobot;
 import io.swagger.client.selfCreatedServicesEtc.LocalRobots.PrintStats;
-import io.swagger.client.selfCreatedServicesEtc.WaitForEnemy;
 
 import java.util.List;
 
