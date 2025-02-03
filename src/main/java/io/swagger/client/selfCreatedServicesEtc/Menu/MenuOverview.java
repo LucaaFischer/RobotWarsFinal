@@ -13,7 +13,8 @@ public class MenuOverview {
                 " 4. Join Game" +
                 " 5. See every robot in da whole universe" +
                 " 6. See a single robot" +
-                " 7. Create new Robot");
+                " 7. Create new Robot" +
+                " 8. Find out how much trash is in Database");
 
         return input.nextInt();
     }

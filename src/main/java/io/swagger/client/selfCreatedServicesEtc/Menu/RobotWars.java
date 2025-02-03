@@ -35,6 +35,9 @@ public class RobotWars {
 
         } else if (choice == 7) {
             RobotServices.createRobot(api);
+
+        } else if (choice == 8) {
+            CountRobotsNGames.findTrash(api);
         }
     }
 }
